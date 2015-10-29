@@ -1,6 +1,6 @@
 package com.bendoerr.saltedmocha.nacl;
 
-import com.bendoerr.saltedmocha.nacl.CryptoOneTimeAuth.CryptoOneTimeAuthException;
+import com.bendoerr.saltedmocha.CryptoException;
 import org.junit.Test;
 
 import java.security.SecureRandom;
@@ -120,7 +120,7 @@ public class CryptoOneTimeAuthTest {
 
             try {
                 crypto_onetimeauth_poly1305_verify(a, c, key);
-            } catch (CryptoOneTimeAuthException e) {
+            } catch (CryptoException e) {
                 fail("failed at " + clen);
             }
 
@@ -129,13 +129,13 @@ public class CryptoOneTimeAuthTest {
                 try {
                     crypto_onetimeauth_poly1305_verify(a, c, key);
                     fail("forgery allowed at " + clen);
-                } catch (CryptoOneTimeAuthException e) {}
+                } catch (CryptoException e) {}
 
                 a[r.nextInt(a.length)] += 1 + r.nextInt(254);
                 try {
                     crypto_onetimeauth_poly1305_verify(a, c, key);
                     fail("forgery allowed at " + clen);
-                } catch (CryptoOneTimeAuthException e) {}
+                } catch (CryptoException e) {}
             }
         }
 

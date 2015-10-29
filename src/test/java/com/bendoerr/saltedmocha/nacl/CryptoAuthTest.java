@@ -1,5 +1,6 @@
 package com.bendoerr.saltedmocha.nacl;
 
+import com.bendoerr.saltedmocha.CryptoException;
 import org.bouncycastle.util.Arrays;
 import org.junit.Test;
 
@@ -94,13 +95,13 @@ public class CryptoAuthTest {
                 try {
                     crypto_auth_hmacsha512256_verify(a, c, key);
                     fail("forgery allowed at " + len);
-                } catch (CryptoAuth.CryptoAuthException e) {}
+                } catch (CryptoException e) {}
 
                 a[r.nextInt(a.length)] += 1 + r.nextInt(254);
                 try {
                     crypto_auth_hmacsha512256_verify(a, c, key);
                     fail("forgery allowed at " + len);
-                } catch (CryptoAuth.CryptoAuthException e) {}
+                } catch (CryptoException e) {}
             }
         }
 

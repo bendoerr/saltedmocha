@@ -1,9 +1,13 @@
 package com.bendoerr.saltedmocha.nacl;
 
+import com.bendoerr.saltedmocha.CryptoException;
 import org.bouncycastle.crypto.macs.Poly1305;
 import org.bouncycastle.crypto.params.KeyParameter;
 
-import static java.lang.System.arraycopy;
+import static com.bendoerr.saltedmocha.CryptoException.exception;
+import static com.bendoerr.saltedmocha.CryptoException.exceptionOf;
+import static com.bendoerr.saltedmocha.Util.checkedArrayCopy;
+import static com.bendoerr.saltedmocha.Util.validateLength;
 import static org.bouncycastle.crypto.generators.Poly1305KeyGenerator.clamp;
 import static org.bouncycastle.util.Arrays.constantTimeAreEqual;
 
@@ -21,30 +25,38 @@ public class CryptoOneTimeAuth {
      * crypto_onetimeauth_BYTES. The function raises an exception if k.length is
      * not crypto_onetimeauth_KEYBYTES.
      */
-    public static byte[] crypto_onetimeauth(byte[] m, byte[] k) {
+    public static void crypto_onetimeauth(byte[] a_out, byte[] m, byte[] k) throws CryptoException {
+        crypto_onetimeauth_poly1305(a_out, m, k);
+    }
+
+    public static byte[] crypto_onetimeauth(byte[] m, byte[] k) throws CryptoException {
         return crypto_onetimeauth_poly1305(m, k);
     }
 
-    public static byte[] crypto_onetimeauth_poly1305(byte[] m, byte[] k) {
-        if (k.length != crypto_onetimeauth_poly1305_KEYBYTES)
-            throw new IllegalArgumentException(
-                    "k.length is not crypto_onetimeauth_KEYBYTES.");
+    public static byte[] crypto_onetimeauth_poly1305(byte[] m, byte[] k) throws CryptoException {
+        byte[] a_out = new byte[crypto_onetimeauth_poly1305_BYTES];
+        crypto_onetimeauth_poly1305(a_out, m, k);
+        return a_out;
+    }
+
+    public static void crypto_onetimeauth_poly1305(byte[] a_out, byte[] m, byte[] k) throws CryptoException {
+        validateLength(k, crypto_onetimeauth_poly1305_KEYBYTES,
+                "key", "crypto_onetimeauth_poly1305_KEYBYTES");
 
         // BouncyCastle has a flipped key layout.
         byte[] kf = new byte[crypto_onetimeauth_poly1305_KEYBYTES];
-        arraycopy(k, 16, kf, 0, 16);
-        arraycopy(k, 0, kf, 16, 16);
+        checkedArrayCopy(k, 16, kf, 0, 16);
+        checkedArrayCopy(k, 0, kf, 16, 16);
 
-        byte[] a = new byte[crypto_onetimeauth_poly1305_BYTES];
-
-        clamp(kf); // ClampP
-
-        Poly1305 mac = new Poly1305();
-        mac.init(new KeyParameter(kf));
-        mac.update(m, 0, m.length);
-        mac.doFinal(a, 0);
-
-        return a;
+        try {
+            clamp(kf); // ClampP
+            Poly1305 mac = new Poly1305();
+            mac.init(new KeyParameter(kf));
+            mac.update(m, 0, m.length);
+            mac.doFinal(a_out, 0);
+        } catch (RuntimeException re) {
+            throw exceptionOf(re);
+        }
     }
 
     /**
@@ -53,29 +65,19 @@ public class CryptoOneTimeAuth {
      * and a is a correct authenticator of a message m under the secret key k.
      * If any of these checks fail, the function raises an exception.
      */
-    public static void crypto_onetimeauth_verify(byte[] a, byte[] m, byte[] k) {
+    public static void crypto_onetimeauth_verify(byte[] a, byte[] m, byte[] k) throws CryptoException {
         crypto_onetimeauth_poly1305_verify(a, m, k);
     }
 
-    public static void crypto_onetimeauth_poly1305_verify(byte[] a, byte[] m, byte[] k) {
-        if (k.length != crypto_onetimeauth_poly1305_KEYBYTES)
-            throw new IllegalArgumentException(
-                    "k.length is not crypto_onetimeauth_KEYBYTES.");
+    public static void crypto_onetimeauth_poly1305_verify(byte[] a, byte[] m, byte[] k) throws CryptoException {
+        validateLength(k, crypto_onetimeauth_poly1305_KEYBYTES,
+                "key", "crypto_onetimeauth_poly1305_KEYBYTES");
 
-        if (a.length != crypto_onetimeauth_poly1305_BYTES)
-            throw new IllegalArgumentException(
-                    "a.length is not crypto_onetimeauth_BYTES");
+        validateLength(a, crypto_onetimeauth_poly1305_BYTES,
+                "auth", "crypto_onetimeauth_poly1305_BYTES");
 
         byte[] a2 = crypto_onetimeauth_poly1305(m, k);
         if (!constantTimeAreEqual(a, a2))
-            throw new CryptoOneTimeAuthException("failed to verify");
+            throw exception("failed to verify");
     }
-
-    public static class CryptoOneTimeAuthException extends RuntimeException {
-        public CryptoOneTimeAuthException(String message) {
-            super(message);
-        }
-    }
-
-    ;
 }

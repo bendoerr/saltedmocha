@@ -1,5 +1,6 @@
 package com.bendoerr.saltedmocha.nacl;
 
+import com.bendoerr.saltedmocha.CryptoException;
 import org.junit.Test;
 
 import java.security.SecureRandom;
@@ -217,7 +218,7 @@ public class CryptoBoxTest {
             try {
                 CryptoBox.crypto_box_open(c, nonce, alicepk, bobsk);
                 fail("forgery allowed");
-            } catch (CryptoOneTimeAuth.CryptoOneTimeAuthException e) {}
+            } catch (CryptoException e) {}
         }
 
         System.out.println("\tno forgery allowed in " + work + " random attempts");

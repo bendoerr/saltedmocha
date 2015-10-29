@@ -1,12 +1,14 @@
 package com.bendoerr.saltedmocha.nacl;
 
-import org.bouncycastle.util.Arrays;
+import com.bendoerr.saltedmocha.CryptoException;
 
 import java.math.BigInteger;
 
+import static com.bendoerr.saltedmocha.Util.checkedArrayCopy;
+import static com.bendoerr.saltedmocha.Util.validateLength;
+import static com.bendoerr.saltedmocha.nacl.CryptoScalarMult.JavaCurve25519.curve25519;
 import static java.math.BigInteger.ONE;
 import static java.math.BigInteger.ZERO;
-import static com.bendoerr.saltedmocha.nacl.CryptoScalarMult.JavaCurve25519.curve25519;
 import static org.bouncycastle.util.Arrays.copyOf;
 import static org.bouncycastle.util.Arrays.prepend;
 
@@ -28,7 +30,11 @@ public class CryptoScalarMult {
      * It also raises an exception if n.size() is not
      * crypto_scalarmult_SCALARBYTES.
      */
-    public static byte[] crypto_scalarmult(byte[] n, byte[] p) {
+    public static void crypto_scalarmult(byte[] q_out, byte[] n, byte[] p) throws CryptoException {
+        crypto_scalarmult_curve25519(q_out, n, p);
+    }
+
+    public static byte[] crypto_scalarmult(byte[] n, byte[] p) throws CryptoException {
         return crypto_scalarmult_curve25519(n, p);
     }
 
@@ -38,21 +44,38 @@ public class CryptoScalarMult {
      * element q of length crypto_scalarmult_BYTES. It raises an exception if
      * n.size() is not crypto_scalarmult_SCALARBYTES.
      */
-    public static byte[] crypto_scalarmult_base(byte[] n) {
+    public static void crypto_scalarmult_base(byte[] q_out, byte[] n) throws CryptoException {
+        crypto_scalarmult_curve25519_base(q_out, n);
+    }
+
+    public static byte[] crypto_scalarmult_base(byte[] n) throws CryptoException {
         return crypto_scalarmult_curve25519_base(n);
     }
 
-    public static byte[] crypto_scalarmult_curve25519(byte[] n, byte[] p) {
-        if (n.length != crypto_scalarmult_curve25519_SCALARBYTES)
-            throw new IllegalArgumentException("n must be crypto_scalarmult_curve25519_SCALARBYTES");
+    public static void crypto_scalarmult_curve25519(byte[] q_out, byte[] n, byte[] p) throws CryptoException {
+        validateLength(n, crypto_scalarmult_curve25519_SCALARBYTES,
+                "integer n", "crypto_scalarmult_curve25519_SCALARBYTES");
 
-        if (p.length != crypto_scalarmult_curve25519_BYTES)
-            throw new IllegalArgumentException("p must be crypto_scalarmult_curve25519_BYTES");
+        validateLength(p, crypto_scalarmult_curve25519_BYTES,
+                "group element p", "crypto_scalarmult_curve25519_BYTES");
 
-        return Arrays.copyOf(curve25519(n, p), crypto_scalarmult_curve25519_BYTES);
+        byte[] s = curve25519(n, p);
+        checkedArrayCopy(
+                s, 0,
+                q_out, 0, s.length);
     }
 
-    public static byte[] crypto_scalarmult_curve25519_base(byte[] n) {
+    public static byte[] crypto_scalarmult_curve25519(byte[] n, byte[] p) throws CryptoException {
+        byte[] q = new byte[crypto_scalarmult_curve25519_BYTES];
+        crypto_scalarmult_curve25519(q, n, p);
+        return q;
+    }
+
+    public static void crypto_scalarmult_curve25519_base(byte[] q_out, byte[] n) throws CryptoException {
+        crypto_scalarmult_curve25519(q_out, n, curve25519_BASE);
+    }
+
+    public static byte[] crypto_scalarmult_curve25519_base(byte[] n) throws CryptoException {
         return crypto_scalarmult_curve25519(n, curve25519_BASE);
     }
 
@@ -65,7 +88,6 @@ public class CryptoScalarMult {
     public static class JavaCurve25519 {
         static BigInteger P = BigInteger.valueOf(2).pow(255).subtract(BigInteger.valueOf(19));
         static BigInteger A = BigInteger.valueOf(486662);
-
         static BigInteger TWO = BigInteger.valueOf(2);
 
         static BigInteger expmod(BigInteger b, BigInteger e, BigInteger m) {
@@ -82,16 +104,6 @@ public class CryptoScalarMult {
 
         static BigInteger inv(BigInteger x) {
             return expmod(x, P.subtract(TWO), P);
-        }
-
-        static class Pair {
-            public BigInteger x;
-            public BigInteger z;
-
-            public Pair(BigInteger x, BigInteger z) {
-                this.x = x;
-                this.z = z;
-            }
         }
 
         static Pair add(Pair n, Pair m, Pair d) {
@@ -112,18 +124,18 @@ public class CryptoScalarMult {
 
         static Pair[] f(Pair one, Pair two, BigInteger m) {
             if (m.equals(ONE))
-                return new Pair[] {one, two};
+                return new Pair[]{one, two};
 
             Pair[] pma = f(one, two, m.divide(TWO));
             Pair pm = pma[0];
             Pair pm1 = pma[1];
 
             if (!m.and(ONE).equals(ZERO)) {
-                return new Pair[] {
+                return new Pair[]{
                         add(pm, pm1, one), twice(pm1)};
             }
 
-            return new Pair[] {
+            return new Pair[]{
                     twice(pm), add(pm, pm1, one)};
         }
 
@@ -136,7 +148,9 @@ public class CryptoScalarMult {
         }
 
         public static byte[] curve25519(byte[] n, byte[] base) {
-            return unpack(curve25519(pack(clampc(n)), pack(base)));
+            return unpack(
+                    curve25519(
+                            pack(clampc(n)), pack(base)));
         }
 
         public static byte[] clampc(final byte[] n) {
@@ -155,13 +169,23 @@ public class CryptoScalarMult {
             // flip between little edan and big
             // Java BigIntegers are big
             byte[] s = new byte[n.length];
-            for (int i = 0; i < n.length; i ++)
+            for (int i = 0; i < n.length; i++)
                 s[i] = n[n.length - 1 - i];
             return s;
         }
 
         public static byte[] unpack(BigInteger n) {
             return reverse(n.toByteArray());
+        }
+
+        private static class Pair {
+            public BigInteger x;
+            public BigInteger z;
+
+            public Pair(BigInteger x, BigInteger z) {
+                this.x = x;
+                this.z = z;
+            }
         }
     }
 }

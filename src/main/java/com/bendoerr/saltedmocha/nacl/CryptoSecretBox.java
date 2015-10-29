@@ -1,6 +1,11 @@
 package com.bendoerr.saltedmocha.nacl;
 
-import static java.lang.System.arraycopy;
+import com.bendoerr.saltedmocha.CryptoException;
+
+import static com.bendoerr.saltedmocha.Util.checkedArrayCopy;
+import static com.bendoerr.saltedmocha.Util.validateLength;
+import static com.bendoerr.saltedmocha.nacl.CryptoOneTimeAuth.crypto_onetimeauth_poly1305;
+import static com.bendoerr.saltedmocha.nacl.CryptoOneTimeAuth.crypto_onetimeauth_poly1305_verify;
 import static com.bendoerr.saltedmocha.nacl.CryptoStream.crypto_stream_xsalsa20;
 import static com.bendoerr.saltedmocha.nacl.CryptoStream.crypto_stream_xsalsa20_xor;
 import static org.bouncycastle.util.Arrays.copyOfRange;
@@ -9,12 +14,14 @@ public class CryptoSecretBox {
 
     public static final int crypto_secretbox_xsalsa20poly1305_KEYBYTES = 32;
     public static final int crypto_secretbox_xsalsa20poly1305_NONCEBYTES = 24;
-
-    private static final int xsalsa20poly1305_ZEROBYTES = 32;
-    private static final int xsalsa20poly1305_BOXZEROBYTES = 16;
+    public static final int crypto_secretbox_xsalsa20poly1305_ZEROBYTES = 32;
+    public static final int crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES = 16;
 
     public static final int crypto_secretbox_KEYBYTES = crypto_secretbox_xsalsa20poly1305_KEYBYTES;
     public static final int crypto_secretbox_NONCEBYTES = crypto_secretbox_xsalsa20poly1305_NONCEBYTES;
+    public static final int crypto_secretbox_ZEROBYTES = crypto_secretbox_xsalsa20poly1305_ZEROBYTES;
+    public static final int crypto_secretbox_BOXZEROBYTES = crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES;
+
 
     /**
      * The crypto_secretbox function encrypts and authenticates a message m
@@ -23,71 +30,85 @@ public class CryptoSecretBox {
      * is not crypto_secretbox_KEYBYTES. The function also raises an exception
      * if n.size() is not crypto_secretbox_NONCEBYTES.
      */
-    public static byte[] crypto_secretbox(byte[] m, byte[] n, byte[] k) {
+    public static void crypto_secretbox(byte[] ac_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
+        crypto_secretbox_xsalsa20poly1305(ac_out, m, n, k);
+    }
+
+    public static byte[] crypto_secretbox(byte[] m, byte[] n, byte[] k) throws CryptoException {
         return crypto_secretbox_xsalsa20poly1305(m, n, k);
     }
 
-    public static byte[] crypto_secretbox_xsalsa20poly1305(byte[] m, byte[] n, byte[] k) {
-        if (k.length != crypto_secretbox_xsalsa20poly1305_KEYBYTES)
-            throw new IllegalArgumentException("k must be crypto_secretbox_xsalsa20poly1305_KEYBYTES");
+    public static byte[] crypto_secretbox_xsalsa20poly1305(byte[] m, byte[] n, byte[] k) throws CryptoException {
+        byte[] ac_out = new byte[crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES + m.length];
+        crypto_secretbox_xsalsa20poly1305(ac_out, m, n, k);
+        return ac_out;
+    }
 
-        if (n.length != crypto_secretbox_xsalsa20poly1305_NONCEBYTES)
-            throw new IllegalArgumentException("n must be crypto_secretbox_xsalsa20poly1305_NONCEBYTES");
+    public static void crypto_secretbox_xsalsa20poly1305(byte[] ac_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
+        validateLength(k, crypto_secretbox_xsalsa20poly1305_KEYBYTES,
+                "key", "crypto_secretbox_xsalsa20poly1305_KEYBYTES");
 
-        byte[] m2 = new byte[xsalsa20poly1305_ZEROBYTES + m.length];
-        arraycopy(m, 0, m2, xsalsa20poly1305_ZEROBYTES, m.length);
+        validateLength(n, crypto_secretbox_xsalsa20poly1305_NONCEBYTES,
+                "nonce", "crypto_secretbox_xsalsa20poly1305_NONCEBYTES");
+
+        byte[] m2 = new byte[crypto_secretbox_xsalsa20poly1305_ZEROBYTES + m.length];
+        checkedArrayCopy(m, 0, m2, crypto_secretbox_xsalsa20poly1305_ZEROBYTES, m.length);
 
         byte[] s = crypto_stream_xsalsa20_xor(m2, n, k);
 
-        byte[] rs = copyOfRange(s, 0, xsalsa20poly1305_ZEROBYTES);
-        byte[] c = copyOfRange(s, xsalsa20poly1305_ZEROBYTES, s.length);
-        byte[] a = CryptoOneTimeAuth.crypto_onetimeauth_poly1305(c, rs);
+        byte[] rs = copyOfRange(s, 0, crypto_secretbox_xsalsa20poly1305_ZEROBYTES);
+        byte[] c = copyOfRange(s, crypto_secretbox_xsalsa20poly1305_ZEROBYTES, s.length);
+        byte[] a = crypto_onetimeauth_poly1305(c, rs);
 
 
-        byte[] ac = new byte[xsalsa20poly1305_BOXZEROBYTES + c.length];
-        arraycopy(a, 0, ac, 0, xsalsa20poly1305_BOXZEROBYTES);
-        arraycopy(c, 0, ac, xsalsa20poly1305_BOXZEROBYTES, c.length);
-
-        return ac;
+        checkedArrayCopy(a, 0, ac_out, 0, crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES);
+        checkedArrayCopy(c, 0, ac_out, crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES, c.length);
     }
 
     /**
      * The crypto_secretbox_open function verifies and decrypts a ciphertext c
      * using a secret key k and a nonce n. The crypto_secretbox_open function
      * returns the resulting plaintext m.
-     *
+     * <p>
      * If the ciphertext fails verification, crypto_secretbox_open raises an
      * exception. The function also raises an exception if k.size() is not
      * crypto_secretbox_KEYBYTES, or if n.size() is not
      * crypto_secretbox_NONCEBYTES.
      */
-    public static byte[] crypto_secretbox_open(byte[] c, byte[] n, byte[] k) {
-        return crypto_secretbox_xsalsa20poly1305_open(c, n , k);
+    public static void crypto_secretbox_open(byte[] m_out, byte[] c, byte[] n, byte[] k) throws CryptoException {
+        crypto_secretbox_xsalsa20poly1305_open(m_out, c, n, k);
     }
 
-    public static byte[] crypto_secretbox_xsalsa20poly1305_open(byte[] ac, byte[] n, byte[] k) {
+    public static byte[] crypto_secretbox_open(byte[] c, byte[] n, byte[] k) throws CryptoException {
+        return crypto_secretbox_xsalsa20poly1305_open(c, n, k);
+    }
+
+    public static byte[] crypto_secretbox_xsalsa20poly1305_open(byte[] ac, byte[] n, byte[] k) throws CryptoException {
+        byte[] m_out = new byte[ac.length - crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES];
+        crypto_secretbox_xsalsa20poly1305_open(m_out, ac, n, k);
+        return m_out;
+    }
+
+    public static void crypto_secretbox_xsalsa20poly1305_open(byte[] m_out, byte[] ac, byte[] n, byte[] k) throws CryptoException {
         if (ac.length < 16)
-            throw new IllegalArgumentException("c is too small");
+            throw CryptoException.exceptionOf(new IllegalArgumentException("ac is too small"));
 
-        if (k.length != crypto_secretbox_xsalsa20poly1305_KEYBYTES)
-            throw new IllegalArgumentException("k must be crypto_secretbox_xsalsa20poly1305_KEYBYTES");
+        validateLength(k, crypto_secretbox_xsalsa20poly1305_KEYBYTES,
+                "key", "crypto_secretbox_xsalsa20poly1305_KEYBYTES");
 
-        if (n.length != crypto_secretbox_xsalsa20poly1305_NONCEBYTES)
-            throw new IllegalArgumentException("n must be crypto_secretbox_xsalsa20poly1305_NONCEBYTES");
+        validateLength(n, crypto_secretbox_xsalsa20poly1305_NONCEBYTES,
+                "nonce", "crypto_secretbox_xsalsa20poly1305_NONCEBYTES");
 
         byte[] subkey = crypto_stream_xsalsa20(crypto_secretbox_xsalsa20poly1305_KEYBYTES, n, k);
-        byte[] a = copyOfRange(ac, 0, xsalsa20poly1305_BOXZEROBYTES);
-        byte[] c = copyOfRange(ac, xsalsa20poly1305_BOXZEROBYTES, ac.length);
+        byte[] a = copyOfRange(ac, 0, crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES);
+        byte[] c = copyOfRange(ac, crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES, ac.length);
 
-        CryptoOneTimeAuth.crypto_onetimeauth_poly1305_verify(a, c, subkey);
+        crypto_onetimeauth_poly1305_verify(a, c, subkey);
 
-        byte[] c2 = new byte[xsalsa20poly1305_ZEROBYTES + c.length];
-        arraycopy(c, 0, c2, xsalsa20poly1305_ZEROBYTES, c.length);
+        byte[] c2 = new byte[crypto_secretbox_xsalsa20poly1305_ZEROBYTES + c.length];
+        checkedArrayCopy(c, 0, c2, crypto_secretbox_xsalsa20poly1305_ZEROBYTES, c.length);
+
         byte[] m = crypto_stream_xsalsa20_xor(c2, n, k);
-
-        byte[] m2 = new byte[m.length - xsalsa20poly1305_ZEROBYTES];
-        arraycopy(m, xsalsa20poly1305_ZEROBYTES, m2, 0, m2.length);
-
-        return m2;
+        checkedArrayCopy(m, crypto_secretbox_xsalsa20poly1305_ZEROBYTES, m_out, 0, m_out.length);
     }
 }
