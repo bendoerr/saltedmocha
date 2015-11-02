@@ -62,7 +62,7 @@ public class CryptoSecretBox {
 
 
         checkedArrayCopy(a, 0, ac_out, 0, crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES);
-        checkedArrayCopy(c, 0, ac_out, crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES, c.length);
+        checkedArrayCopy(c, 0, ac_out, crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES, ac_out.length - crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES);
     }
 
     /**
@@ -91,7 +91,7 @@ public class CryptoSecretBox {
 
     public static void crypto_secretbox_xsalsa20poly1305_open(byte[] m_out, byte[] ac, byte[] n, byte[] k) throws CryptoException {
         if (ac.length < 16)
-            throw CryptoException.exceptionOf(new IllegalArgumentException("ac is too small"));
+            throw CryptoException.exceptionOf(new IllegalArgumentException("c is too small"));
 
         validateLength(k, crypto_secretbox_xsalsa20poly1305_KEYBYTES,
                 "key", "crypto_secretbox_xsalsa20poly1305_KEYBYTES");
@@ -109,6 +109,6 @@ public class CryptoSecretBox {
         checkedArrayCopy(c, 0, c2, crypto_secretbox_xsalsa20poly1305_ZEROBYTES, c.length);
 
         byte[] m = crypto_stream_xsalsa20_xor(c2, n, k);
-        checkedArrayCopy(m, crypto_secretbox_xsalsa20poly1305_ZEROBYTES, m_out, 0, m_out.length);
+        checkedArrayCopy(m, crypto_secretbox_xsalsa20poly1305_ZEROBYTES, m_out, 0, m.length - crypto_secretbox_xsalsa20poly1305_ZEROBYTES);
     }
 }
