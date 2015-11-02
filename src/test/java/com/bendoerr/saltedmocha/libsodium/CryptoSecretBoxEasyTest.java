@@ -132,11 +132,16 @@ public class CryptoSecretBoxEasyTest {
 
         byte[] c = new byte[m_1.length + crypto_secretbox_MACBYTES];
 
-        try {
-            crypto_secretbox_easy(c, copyOf(m_1, Util.MAX_ARRAY_SIZE - 1), nonce_1, firstkey_1);
-            fail("should have failed");
-        } catch (CryptoException exception) {
-            assertEquals("m is too big", exception.getMessage());
+
+        if (System.getProperty("tests.on.travis") == null) {
+            try {
+                crypto_secretbox_easy(c, copyOf(m_1, Util.MAX_ARRAY_SIZE - 1), nonce_1, firstkey_1);
+                fail("should have failed");
+            } catch (CryptoException exception) {
+                assertEquals("m is too big", exception.getMessage());
+            }
+        } else {
+            System.out.println("Running on Travis. Skipped.");
         }
     }
 

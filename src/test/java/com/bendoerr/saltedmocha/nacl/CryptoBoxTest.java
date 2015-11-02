@@ -171,23 +171,32 @@ public class CryptoBoxTest {
     public void test_box5() throws Exception {
         System.out.println("nacl-20110221/tests/box5.cpp");
         Random r = new SecureRandom();
-        int work = 1000;
+        int work = 100;
+
+        byte[] alicesk;
+        byte[] alicepk;
+        byte[] bobsk;
+        byte[] bobpk;
+        byte[] nonce;
+        byte[] m;
+        byte[] c;
+        byte[] m2;
 
         for (int mlen = 0; mlen < work; mlen++) {
-            byte[] alicesk = new byte[32];
-            byte[] alicepk = CryptoBox.crypto_box_keypair(alicesk);
+            alicesk = new byte[32];
+            alicepk = CryptoBox.crypto_box_keypair(alicesk);
 
-            byte[] bobsk = new byte[32];
-            byte[] bobpk = CryptoBox.crypto_box_keypair(bobsk);
+            bobsk = new byte[32];
+            bobpk = CryptoBox.crypto_box_keypair(bobsk);
 
-            byte[] nonce = new byte[24];
+            nonce = new byte[24];
             r.nextBytes(nonce);
 
-            byte[] m = new byte[mlen];
+            m = new byte[mlen];
             r.nextBytes(m);
 
-            byte[] c = CryptoBox.crypto_box(m, nonce, bobpk, alicesk);
-            byte[] m2 = CryptoBox.crypto_box_open(c, nonce, alicepk, bobsk);
+            c = CryptoBox.crypto_box(m, nonce, bobpk, alicesk);
+            m2 = CryptoBox.crypto_box_open(c, nonce, alicepk, bobsk);
             assertArrayEquals(m, m2);
         }
         System.out.println("\tsuccessful encryption/decryption over " + work + " random values");
@@ -197,7 +206,7 @@ public class CryptoBoxTest {
     public void test_box6() throws Exception {
         System.out.println("nacl-20110221/tests/box6.cpp");
         Random r = new SecureRandom();
-        int work = 1000;
+        int work = 100;
 
         for (int mlen = 0; mlen < work; mlen++) {
             byte[] alicesk = new byte[32];
