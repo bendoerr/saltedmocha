@@ -1,5 +1,21 @@
 language: java
+
 jdk:
-- oraclejdk8
+ - oraclejdk8
+
 script:
-- mvn test -B -Dtests.on.travis
+ - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then mvn test -B -Dtests.on.travis; fi
+
+env:
+  global:
+   - secure: "I3CxgOzdVdoWyKCgCuqf4kTUURsxC1znAtmwhvNeN57bi6jd8cyD0D9J2bLRANlSbf+TiXZErqJJ9QsoU4cfx2AD3DDkMyO6seKx1cLbVoP6juFTo5EXK8OqklvkCO1gccDwY4lZMr+HbuXnpbge1hzSQG8SLuMWGmJB0ul+uphum9x/Mh2kRud7pXvPa1s8fLU/p7Kk3G6PQQ9M0Uef1byZPgPz4bUPaZH0kOFrIugdsoHrfr+Ytn4u5/H5BsPC0zUrFzL9DGO8ZJHOG9em1O/j2HERFQ0BbEkaFidBqGNLNrITL39yfu11nTQirvbGIcDqJ6UoHAnKwltMN7GGW0PzDdbzsxoDT0OIghlVf6pKIcwH3JpRcovqRzyGARyNhlWuqtr8PoBwaBduPDPNXb78x/hJFdlWTMgG+f79k0FyjkUrR78gJmE6zvoOWBM8M9I2t74NgTUK8rpMlHnjYgrli83O0/3+GZ7TI1TTQV3Dy2tg+P79ddwi8hYYwhmH3prWjOU3Hw1WWKg2bu0MygNEEtc7RGmuWYpEd7eLfD3cRtQkq3eYQ6E+QrltUIwhycAHJ+CyW7BLG8vNan5ucJYRPXtBAIwrGdCkdXaDzkAHpWdAxCh4pbq8rGAvqc5dScHNG+eRX0OpiwIobnNZ829zZAuclqblwj7H+JPQYCY="
+
+addons:
+  coverity_scan:
+    project:
+      name: "bendoerr/saltedmocha"
+      description: "Build submitted via Travis CI"
+    notification_email: craftsman@bendoerr.me
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn -DskipTests=true compile"
+    branch_pattern: coverity_scan
