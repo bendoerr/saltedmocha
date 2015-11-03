@@ -12,14 +12,23 @@ import static java.math.BigInteger.ZERO;
 import static org.bouncycastle.util.Arrays.copyOf;
 import static org.bouncycastle.util.Arrays.prepend;
 
+/**
+ * <p>CryptoScalarMult class.</p>
+ */
 public class CryptoScalarMult {
 
+    /** Constant <code>crypto_scalarmult_curve25519_BYTES=32</code> */
     public static final int crypto_scalarmult_curve25519_BYTES = 32;
+    /** Constant <code>crypto_scalarmult_curve25519_SCALARBYTES=32</code> */
     public static final int crypto_scalarmult_curve25519_SCALARBYTES = 32;
 
+    /** Constant <code>crypto_scalarmult_BYTES=crypto_scalarmult_curve25519_BYTES</code> */
     public static final int crypto_scalarmult_BYTES = crypto_scalarmult_curve25519_BYTES;
+    /** Constant <code>crypto_scalarmult_SCALARBYTES=crypto_scalarmult_curve25519_SCALARBYTES</code> */
     public static final int crypto_scalarmult_SCALARBYTES = crypto_scalarmult_curve25519_SCALARBYTES;
 
+    /** Constant <code>curve25519_BASE=prepend(
+            new byte[crypto_scalarmult_curve25519_BYTES - 1], (byte) 0x09)</code> */
     public static final byte[] curve25519_BASE = prepend(
             new byte[crypto_scalarmult_curve25519_BYTES - 1], (byte) 0x09);
 
@@ -29,11 +38,24 @@ public class CryptoScalarMult {
      * function raises an exception if p.size() is not crypto_scalarmult_BYTES.
      * It also raises an exception if n.size() is not
      * crypto_scalarmult_SCALARBYTES.
+     *
+     * @param q_out an array of byte.
+     * @param n an array of byte.
+     * @param p an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_scalarmult(byte[] q_out, byte[] n, byte[] p) throws CryptoException {
         crypto_scalarmult_curve25519(q_out, n, p);
     }
 
+    /**
+     * <p>crypto_scalarmult.</p>
+     *
+     * @param n an array of byte.
+     * @param p an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_scalarmult(byte[] n, byte[] p) throws CryptoException {
         return crypto_scalarmult_curve25519(n, p);
     }
@@ -43,15 +65,34 @@ public class CryptoScalarMult {
      * standard group element and an integer n. It returns the resulting group
      * element q of length crypto_scalarmult_BYTES. It raises an exception if
      * n.size() is not crypto_scalarmult_SCALARBYTES.
+     *
+     * @param q_out an array of byte.
+     * @param n an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_scalarmult_base(byte[] q_out, byte[] n) throws CryptoException {
         crypto_scalarmult_curve25519_base(q_out, n);
     }
 
+    /**
+     * <p>crypto_scalarmult_base.</p>
+     *
+     * @param n an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_scalarmult_base(byte[] n) throws CryptoException {
         return crypto_scalarmult_curve25519_base(n);
     }
 
+    /**
+     * <p>crypto_scalarmult_curve25519.</p>
+     *
+     * @param q_out an array of byte.
+     * @param n an array of byte.
+     * @param p an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_scalarmult_curve25519(byte[] q_out, byte[] n, byte[] p) throws CryptoException {
         validateLength(n, crypto_scalarmult_curve25519_SCALARBYTES,
                 "integer n", "crypto_scalarmult_curve25519_SCALARBYTES");
@@ -65,16 +106,38 @@ public class CryptoScalarMult {
                 q_out, 0, s.length);
     }
 
+    /**
+     * <p>crypto_scalarmult_curve25519.</p>
+     *
+     * @param n an array of byte.
+     * @param p an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_scalarmult_curve25519(byte[] n, byte[] p) throws CryptoException {
         byte[] q = new byte[crypto_scalarmult_curve25519_BYTES];
         crypto_scalarmult_curve25519(q, n, p);
         return q;
     }
 
+    /**
+     * <p>crypto_scalarmult_curve25519_base.</p>
+     *
+     * @param q_out an array of byte.
+     * @param n an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_scalarmult_curve25519_base(byte[] q_out, byte[] n) throws CryptoException {
         crypto_scalarmult_curve25519(q_out, n, curve25519_BASE);
     }
 
+    /**
+     * <p>crypto_scalarmult_curve25519_base.</p>
+     *
+     * @param n an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_scalarmult_curve25519_base(byte[] n) throws CryptoException {
         return crypto_scalarmult_curve25519(n, curve25519_BASE);
     }

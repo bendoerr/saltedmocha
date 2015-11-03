@@ -10,16 +10,27 @@ import static com.bendoerr.saltedmocha.nacl.CryptoStream.crypto_stream_xsalsa20;
 import static com.bendoerr.saltedmocha.nacl.CryptoStream.crypto_stream_xsalsa20_xor;
 import static org.bouncycastle.util.Arrays.copyOfRange;
 
+/**
+ * <p>CryptoSecretBox class.</p>
+ */
 public class CryptoSecretBox {
 
+    /** Constant <code>crypto_secretbox_xsalsa20poly1305_KEYBYTES=32</code> */
     public static final int crypto_secretbox_xsalsa20poly1305_KEYBYTES = 32;
+    /** Constant <code>crypto_secretbox_xsalsa20poly1305_NONCEBYTES=24</code> */
     public static final int crypto_secretbox_xsalsa20poly1305_NONCEBYTES = 24;
+    /** Constant <code>crypto_secretbox_xsalsa20poly1305_ZEROBYTES=32</code> */
     public static final int crypto_secretbox_xsalsa20poly1305_ZEROBYTES = 32;
+    /** Constant <code>crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES=16</code> */
     public static final int crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES = 16;
 
+    /** Constant <code>crypto_secretbox_KEYBYTES=crypto_secretbox_xsalsa20poly1305_KEYBYTES</code> */
     public static final int crypto_secretbox_KEYBYTES = crypto_secretbox_xsalsa20poly1305_KEYBYTES;
+    /** Constant <code>crypto_secretbox_NONCEBYTES=crypto_secretbox_xsalsa20poly1305_NONCEBYTES</code> */
     public static final int crypto_secretbox_NONCEBYTES = crypto_secretbox_xsalsa20poly1305_NONCEBYTES;
+    /** Constant <code>crypto_secretbox_ZEROBYTES=crypto_secretbox_xsalsa20poly1305_ZEROBYTES</code> */
     public static final int crypto_secretbox_ZEROBYTES = crypto_secretbox_xsalsa20poly1305_ZEROBYTES;
+    /** Constant <code>crypto_secretbox_BOXZEROBYTES=crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES</code> */
     public static final int crypto_secretbox_BOXZEROBYTES = crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES;
 
 
@@ -29,21 +40,54 @@ public class CryptoSecretBox {
      * the resulting ciphertext c. The function raises an exception if k.size()
      * is not crypto_secretbox_KEYBYTES. The function also raises an exception
      * if n.size() is not crypto_secretbox_NONCEBYTES.
+     *
+     * @param ac_out an array of byte.
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_secretbox(byte[] ac_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
         crypto_secretbox_xsalsa20poly1305(ac_out, m, n, k);
     }
 
+    /**
+     * <p>crypto_secretbox.</p>
+     *
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_secretbox(byte[] m, byte[] n, byte[] k) throws CryptoException {
         return crypto_secretbox_xsalsa20poly1305(m, n, k);
     }
 
+    /**
+     * <p>crypto_secretbox_xsalsa20poly1305.</p>
+     *
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_secretbox_xsalsa20poly1305(byte[] m, byte[] n, byte[] k) throws CryptoException {
         byte[] ac_out = new byte[crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES + m.length];
         crypto_secretbox_xsalsa20poly1305(ac_out, m, n, k);
         return ac_out;
     }
 
+    /**
+     * <p>crypto_secretbox_xsalsa20poly1305.</p>
+     *
+     * @param ac_out an array of byte.
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_secretbox_xsalsa20poly1305(byte[] ac_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
         validateLength(k, crypto_secretbox_xsalsa20poly1305_KEYBYTES,
                 "key", "crypto_secretbox_xsalsa20poly1305_KEYBYTES");
@@ -74,21 +118,54 @@ public class CryptoSecretBox {
      * exception. The function also raises an exception if k.size() is not
      * crypto_secretbox_KEYBYTES, or if n.size() is not
      * crypto_secretbox_NONCEBYTES.
+     *
+     * @param m_out an array of byte.
+     * @param c an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_secretbox_open(byte[] m_out, byte[] c, byte[] n, byte[] k) throws CryptoException {
         crypto_secretbox_xsalsa20poly1305_open(m_out, c, n, k);
     }
 
+    /**
+     * <p>crypto_secretbox_open.</p>
+     *
+     * @param c an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_secretbox_open(byte[] c, byte[] n, byte[] k) throws CryptoException {
         return crypto_secretbox_xsalsa20poly1305_open(c, n, k);
     }
 
+    /**
+     * <p>crypto_secretbox_xsalsa20poly1305_open.</p>
+     *
+     * @param ac an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_secretbox_xsalsa20poly1305_open(byte[] ac, byte[] n, byte[] k) throws CryptoException {
         byte[] m_out = new byte[ac.length - crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES];
         crypto_secretbox_xsalsa20poly1305_open(m_out, ac, n, k);
         return m_out;
     }
 
+    /**
+     * <p>crypto_secretbox_xsalsa20poly1305_open.</p>
+     *
+     * @param m_out an array of byte.
+     * @param ac an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_secretbox_xsalsa20poly1305_open(byte[] m_out, byte[] ac, byte[] n, byte[] k) throws CryptoException {
         if (ac.length < 16)
             throw CryptoException.exceptionOf(new IllegalArgumentException("c is too small"));

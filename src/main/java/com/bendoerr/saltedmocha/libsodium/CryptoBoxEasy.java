@@ -9,13 +9,22 @@ import static com.bendoerr.saltedmocha.libsodium.CryptoSecretBoxEasy.crypto_secr
 import static com.bendoerr.saltedmocha.libsodium.CryptoSecretBoxEasy.crypto_secretbox_open_detached;
 import static com.bendoerr.saltedmocha.nacl.CryptoBox.*;
 
+/**
+ * <p>CryptoBoxEasy class.</p>
+ */
 public class CryptoBoxEasy {
 
+    /** Constant <code>crypto_box_PUBLICKEYBYTES=CryptoBox.crypto_box_PUBLICKEYBYTES</code> */
     public static final int crypto_box_PUBLICKEYBYTES = CryptoBox.crypto_box_PUBLICKEYBYTES;
+    /** Constant <code>crypto_box_SECRETKEYBYTES=CryptoBox.crypto_box_SECRETKEYBYTES</code> */
     public static final int crypto_box_SECRETKEYBYTES = CryptoBox.crypto_box_SECRETKEYBYTES;
+    /** Constant <code>crypto_box_MACBYTES=CryptoOneTimeAuth.crypto_onetimeauth_BYTES</code> */
     public static final int crypto_box_MACBYTES = CryptoOneTimeAuth.crypto_onetimeauth_BYTES;
+    /** Constant <code>crypto_box_NONCEBYTES=CryptoBox.crypto_box_NONCEBYTES</code> */
     public static final int crypto_box_NONCEBYTES = CryptoBox.crypto_box_NONCEBYTES;
+    /** Constant <code>crypto_box_SEEDBYTES=0</code> */
     public static final int crypto_box_SEEDBYTES = 0;
+    /** Constant <code>crypto_box_BEFORENMBYTES=CryptoBox.crypto_box_BEFORENM</code> */
     public static final int crypto_box_BEFORENMBYTES = CryptoBox.crypto_box_BEFORENM;
 
     //    int
@@ -26,6 +35,17 @@ public class CryptoBoxEasy {
     //        return crypto_secretbox_detached(c, mac, m, mlen, n, k);
     //    }
 
+    /**
+     * <p>crypto_box_detached_afternm.</p>
+     *
+     * @param c_out an array of byte.
+     * @param mac_out an array of byte.
+     * @param mac_out an array of byte.
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_box_detached_afternm(final byte[] c_out, final byte[] mac_out,
                                                    final byte[] m, final byte[] n,
                                                    final byte[] k) throws CryptoException {
@@ -50,6 +70,18 @@ public class CryptoBoxEasy {
     //        return ret;
     //    }
 
+    /**
+     * <p>crypto_box_detatched.</p>
+     *
+     * @param c_out an array of byte.
+     * @param mac_out an array of byte.
+     * @param mac_out an array of byte.
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param pk an array of byte.
+     * @param sk an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_box_detatched(final byte[] c_out, final byte[] mac_out,
                                             final byte[] m, final byte[] n, final byte[] pk,
                                             final byte[] sk) throws CryptoException {
@@ -69,6 +101,15 @@ public class CryptoBoxEasy {
     //                k);
     //    }
 
+    /**
+     * <p>crypto_box_easy_afternm.</p>
+     *
+     * @param c_out an array of byte.
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_box_easy_afternm(final byte[] c_out, final byte[] m,
                                                final byte[] n, final byte[] k) throws CryptoException {
         if (m.length > MAX_ARRAY_SIZE - crypto_box_MACBYTES)
@@ -89,6 +130,16 @@ public class CryptoBoxEasy {
     //                pk, sk);
     //    }
 
+    /**
+     * <p>crypto_box_easy.</p>
+     *
+     * @param c_out an array of byte.
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param pk an array of byte.
+     * @param sk an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_box_easy(final byte[] c_out, final byte[] m, final byte[] n,
                                        final byte[] pk, final byte[] sk) throws CryptoException {
         if (m.length > MAX_ARRAY_SIZE - crypto_box_MACBYTES)
@@ -106,6 +157,16 @@ public class CryptoBoxEasy {
     //        return crypto_secretbox_open_detached(m, c, mac, clen, n, k);
     //    }
 
+    /**
+     * <p>crypto_box_open_detached_afternm.</p>
+     *
+     * @param m_out an array of byte.
+     * @param c an array of byte.
+     * @param mac an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_box_open_detached_afternm(final byte[] m_out, final byte[] c,
                                                         final byte[] mac, final byte[] n,
                                                         final byte[] k) throws CryptoException {
@@ -128,6 +189,17 @@ public class CryptoBoxEasy {
     //        return ret;
     //    }
 
+    /**
+     * <p>crypto_box_open_detached.</p>
+     *
+     * @param m_out an array of byte.
+     * @param c an array of byte.
+     * @param mac an array of byte.
+     * @param n an array of byte.
+     * @param pk an array of byte.
+     * @param sk an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_box_open_detached(final byte[] m_out, final byte[] c,
                                                 final byte[] mac, final byte[] n,
                                                 final byte[] pk, final byte[] sk) throws CryptoException {
@@ -148,6 +220,15 @@ public class CryptoBoxEasy {
     //                n, k);
     //    }
 
+    /**
+     * <p>crypto_box_open_easy_afternm.</p>
+     *
+     * @param m_out an array of byte.
+     * @param c an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_box_open_easy_afternm(final byte[] m_out, final byte[] c,
                                                     final byte[] n, final byte[] k) throws CryptoException {
         crypto_box_open_afternm(m_out, c, n, k);
@@ -166,6 +247,16 @@ public class CryptoBoxEasy {
     //                n, pk, sk);
     //    }
 
+    /**
+     * <p>crypto_box_open_easy.</p>
+     *
+     * @param m_out an array of byte.
+     * @param c an array of byte.
+     * @param n an array of byte.
+     * @param pk an array of byte.
+     * @param sk an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_box_open_easy(final byte[] m_out, final byte[] c, final byte[] n,
                                             final byte[] pk, final byte[] sk) throws CryptoException {
         crypto_box_open(m_out, c, n, pk, sk);

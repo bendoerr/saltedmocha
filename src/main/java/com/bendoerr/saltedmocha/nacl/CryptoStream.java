@@ -11,15 +11,24 @@ import static com.bendoerr.saltedmocha.CryptoException.exceptionOf;
 import static com.bendoerr.saltedmocha.Util.checkedArrayCopy;
 import static com.bendoerr.saltedmocha.Util.validateLength;
 
+/**
+ * <p>CryptoStream class.</p>
+ */
 public class CryptoStream {
 
+    /** Constant <code>crypto_stream_xsalsa_KEYBYTES=32</code> */
     public static int crypto_stream_xsalsa_KEYBYTES = 32;
+    /** Constant <code>crypto_stream_xsalsa_NONCEBYTES=24</code> */
     public static int crypto_stream_xsalsa_NONCEBYTES = 24;
 
+    /** Constant <code>crypto_stream_KEYBYTES=crypto_stream_xsalsa_KEYBYTES</code> */
     public static int crypto_stream_KEYBYTES = crypto_stream_xsalsa_KEYBYTES;
+    /** Constant <code>crypto_stream_NONCEBYTES=crypto_stream_xsalsa_NONCEBYTES</code> */
     public static int crypto_stream_NONCEBYTES = crypto_stream_xsalsa_NONCEBYTES;
 
+    /** Constant <code>crypto_stream_salsa_KEYBYTES=32</code> */
     public static int crypto_stream_salsa_KEYBYTES = 32;
+    /** Constant <code>crypto_stream_salsa_NONCEBYTES=8</code> */
     public static int crypto_stream_salsa_NONCEBYTES = 8;
 
     /**
@@ -27,15 +36,39 @@ public class CryptoStream {
      * of a secret key k and a nonce n. The function raises an exception if
      * k.size() is not crypto_stream_KEYBYTES. It also raises an exception
      * if n.size() is not crypto_stream_NONCEBYTES.
+     *
+     * @param len a int.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static byte[] crypto_stream(int len, byte[] n, byte[] k) throws CryptoException {
         return crypto_stream_xsalsa20(len, n, k);
     }
 
+    /**
+     * <p>crypto_stream_xor.</p>
+     *
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_stream_xor(byte[] m, byte[] n, byte[] k) throws CryptoException {
         return crypto_stream_xsalsa20_xor(m, n, k);
     }
 
+    /**
+     * <p>crypto_stream_salsa20.</p>
+     *
+     * @param len a int.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_stream_salsa20(int len, byte[] n, byte[] k) throws CryptoException {
         validateLength(k, crypto_stream_salsa_KEYBYTES,
                 "key", "crypto_stream_salsa_KEYBYTES");
@@ -50,6 +83,15 @@ public class CryptoStream {
         }
     }
 
+    /**
+     * <p>crypto_stream_salsa20_xor.</p>
+     *
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_stream_salsa20_xor(byte[] m, byte[] n, byte[] k) throws CryptoException {
         validateLength(k, crypto_stream_salsa_KEYBYTES,
                 "key", "crypto_stream_salsa_KEYBYTES");
@@ -64,12 +106,29 @@ public class CryptoStream {
         }
     }
 
+    /**
+     * <p>crypto_stream_xsalsa20.</p>
+     *
+     * @param out an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_stream_xsalsa20(byte[] out, byte[] n, byte[] k) throws CryptoException {
         checkedArrayCopy(
                 crypto_stream_xsalsa20(out.length, n, k), 0,
                 out, 0, out.length);
     }
 
+    /**
+     * <p>crypto_stream_xsalsa20.</p>
+     *
+     * @param len a int.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_stream_xsalsa20(int len, byte[] n, byte[] k) throws CryptoException {
         validateLength(k, crypto_stream_xsalsa_KEYBYTES,
                 "key", "crypto_stream_xsalsa_KEYBYTES");
@@ -84,12 +143,30 @@ public class CryptoStream {
         }
     }
 
+    /**
+     * <p>crypto_stream_xsalsa20_xor.</p>
+     *
+     * @param c_out an array of byte.
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static void crypto_stream_xsalsa20_xor(byte[] c_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
         checkedArrayCopy(
                 crypto_stream_xsalsa20_xor(m, n, k), 0,
                 c_out, 0, c_out.length);
     }
 
+    /**
+     * <p>crypto_stream_xsalsa20_xor.</p>
+     *
+     * @param m an array of byte.
+     * @param n an array of byte.
+     * @param k an array of byte.
+     * @return an array of byte.
+     * @throws com.bendoerr.saltedmocha.CryptoException if any.
+     */
     public static byte[] crypto_stream_xsalsa20_xor(byte[] m, byte[] n, byte[] k) throws CryptoException {
         validateLength(k, crypto_stream_xsalsa_KEYBYTES,
                 "key", "crypto_stream_xsalsa_KEYBYTES");

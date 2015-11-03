@@ -2,15 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.bendoerr</groupId>
-    <artifactId>saltedmocha</artifactId>
-    <version>1.0-SNAPSHOT</version>
+  <groupId>com.bendoerr</groupId>
+  <artifactId>saltedmocha</artifactId>
+  <version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <url>www.saltedmocha.com</url>
+
+  <scm>
+    <connection>scm:git:git@github.com:bendoerr/saltedmocha.git</connection>
+    <url>git@github.com:bendoerr/saltedmocha.git</url>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -72,6 +79,24 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+          <shortRevisionLength>7</shortRevisionLength>
         </configuration>
       </plugin>
     </plugins>
