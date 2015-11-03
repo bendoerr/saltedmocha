@@ -32,4 +32,16 @@ public class Util {
                     what + " length(" + a.length + ") is not " + expectedWhat + "(" + expected + ")"));
     }
 
+    /**
+     * Approximation of libsodium's <code>sodium_memzero</code>. For us in
+     * Javaland it looks like <code>fill(array, (byte) 0)</code>
+     *
+     * @param array to zero out.
+     *
+     * @see <a href="https://download.libsodium.org/doc/helpers/memory_management.html#zeroing-memory">Libsodium Zeroing Memory</a>
+     */
+    public static void java_memzero(byte[] array) {
+        fill(array, (byte) 0);
+    }
+
 }
