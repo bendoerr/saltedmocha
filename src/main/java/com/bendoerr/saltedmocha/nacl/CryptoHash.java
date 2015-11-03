@@ -12,19 +12,27 @@ import static com.bendoerr.saltedmocha.CryptoException.exceptionOf;
  */
 public class CryptoHash {
 
-    /** Constant <code>crypto_hash_sha256_BYTES=32</code> */
+    /**
+     * Constant <code>crypto_hash_sha256_BYTES=32</code>
+     */
     public static final int crypto_hash_sha256_BYTES = 32;
-    /** Constant <code>crypto_hash_sha512_BYTES=64</code> */
+    /**
+     * Constant <code>crypto_hash_sha512_BYTES=64</code>
+     */
     public static final int crypto_hash_sha512_BYTES = 64;
-    /** Constant <code>crypto_hash_BYTES=crypto_hash_sha512_BYTES</code> */
+    /**
+     * Constant <code>crypto_hash_BYTES=crypto_hash_sha512_BYTES</code>
+     */
     public static final int crypto_hash_BYTES = crypto_hash_sha512_BYTES;
+    private CryptoHash() {
+    }
 
     /**
      * The crypto_hash function hashes a message m. It returns a hash h. The
      * output length h.size() is always crypto_hash_BYTES.
      *
      * @param h_out an array of byte.
-     * @param m an array of byte.
+     * @param m     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_hash(byte[] h_out, byte[] m) throws CryptoException {
@@ -46,7 +54,7 @@ public class CryptoHash {
      * <p>crypto_hash_sha256.</p>
      *
      * @param h_out an array of byte.
-     * @param m an array of byte.
+     * @param m     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_hash_sha256(byte[] h_out, byte[] m) throws CryptoException {
@@ -74,7 +82,7 @@ public class CryptoHash {
      * <p>crypto_hash_sha512.</p>
      *
      * @param h_out an array of byte.
-     * @param m an array of byte.
+     * @param m     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_hash_sha512(byte[] h_out, byte[] m) throws CryptoException {

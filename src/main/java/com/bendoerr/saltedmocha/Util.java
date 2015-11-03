@@ -8,8 +8,6 @@ import static org.bouncycastle.util.Arrays.fill;
  */
 public class Util {
 
-    private Util() {}
-
     /**
      * Largest array that we could theoretically allocate without forcing an
      * <code>OutOfMemoryError</code>. It's still likely that you are going to
@@ -38,21 +36,22 @@ public class Util {
         MAX_ARRAY_SIZE = max;
     }
 
+    private Util() {
+    }
+
     /**
      * Wrapped call to <code>System.arraycopy()</code> that propagates the
      * <code>RuntimeException</code>s it throws as <code>CryptoException</code>s
      * allowing them to be handled as generic crypto failures.
      *
-     * @param   src      the source array.
-     * @param   srcPos   starting position in the source array.
-     * @param   dst      the destination array.
-     * @param   dstPos   starting position in the destination data.
-     * @param   len      the number of array elements to be copied.
-     *
-     * @throws  com.bendoerr.saltedmocha.CryptoException if the underlying call to
-     *              <code>System.arraycopy()</code> throws a
-     *              <code>RuntimeException</code>.
-     *
+     * @param src    the source array.
+     * @param srcPos starting position in the source array.
+     * @param dst    the destination array.
+     * @param dstPos starting position in the destination data.
+     * @param len    the number of array elements to be copied.
+     * @throws com.bendoerr.saltedmocha.CryptoException if the underlying call to
+     *                                                  <code>System.arraycopy()</code> throws a
+     *                                                  <code>RuntimeException</code>.
      * @see java.lang.System#arraycopy(Object, int, Object, int, int)
      */
     public static void checkedArrayCopy(Object src, int srcPos, Object dst, int dstPos, int len) throws CryptoException {
@@ -70,14 +69,13 @@ public class Util {
      * <code>IllegalArgumentException</code> and using the additional string
      * values to generate a human readable message.
      *
-     * @param   a             the array to check the length of.
-     * @param   expected      the expected length of the array.
-     * @param   expectedWhat  a human-friendly name of the expected length.
-     * @param   what          a human-friendly name of the array being checked.
-     * @param   expectedWhat  a human-friendly name of the expected length.
-     *
-     * @throws  com.bendoerr.saltedmocha.CryptoException if
-     *              <code>a.length != expected</code>.
+     * @param a            the array to check the length of.
+     * @param expected     the expected length of the array.
+     * @param expectedWhat a human-friendly name of the expected length.
+     * @param what         a human-friendly name of the array being checked.
+     * @param expectedWhat a human-friendly name of the expected length.
+     * @throws com.bendoerr.saltedmocha.CryptoException if
+     *                                                  <code>a.length != expected</code>.
      */
     public static void validateLength(byte[] a, int expected, String what, String expectedWhat) throws CryptoException {
         if (a.length != expected)
@@ -90,7 +88,6 @@ public class Util {
      * Javaland it looks like <code>fill(array, (byte) 0)</code>
      *
      * @param array to zero out.
-     *
      * @see <a href="https://download.libsodium.org/doc/helpers/memory_management.html#zeroing-memory">Libsodium Zeroing Memory</a>
      */
     public static void java_memzero(byte[] array) {

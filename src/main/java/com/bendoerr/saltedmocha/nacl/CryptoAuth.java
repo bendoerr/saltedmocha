@@ -17,27 +17,39 @@ import static com.bendoerr.saltedmocha.nacl.CryptoVerify.crypto_verify_32;
  */
 public class CryptoAuth {
 
-    /** Constant <code>crypto_auth_hmacsha256_BYTES=32</code> */
+    /**
+     * Constant <code>crypto_auth_hmacsha256_BYTES=32</code>
+     */
     public static final int crypto_auth_hmacsha256_BYTES = 32;
-    /** Constant <code>crypto_auth_hmacsha256_KEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_auth_hmacsha256_KEYBYTES=32</code>
+     */
     public static final int crypto_auth_hmacsha256_KEYBYTES = 32;
-
-    /** Constant <code>crypto_auth_hmacsha512256_BYTES=32</code> */
+    /**
+     * Constant <code>crypto_auth_hmacsha512256_BYTES=32</code>
+     */
     public static final int crypto_auth_hmacsha512256_BYTES = 32;
-    /** Constant <code>crypto_auth_hmacsha512256_KEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_auth_hmacsha512256_KEYBYTES=32</code>
+     */
     public static final int crypto_auth_hmacsha512256_KEYBYTES = 32;
-
-    /** Constant <code>crypto_auth_BYTES=crypto_auth_hmacsha512256_BYTES</code> */
+    /**
+     * Constant <code>crypto_auth_BYTES=crypto_auth_hmacsha512256_BYTES</code>
+     */
     public static final int crypto_auth_BYTES = crypto_auth_hmacsha512256_BYTES;
-    /** Constant <code>crypto_auth_KEYBYTES=crypto_auth_hmacsha512256_KEYBYTES</code> */
+    /**
+     * Constant <code>crypto_auth_KEYBYTES=crypto_auth_hmacsha512256_KEYBYTES</code>
+     */
     public static final int crypto_auth_KEYBYTES = crypto_auth_hmacsha512256_KEYBYTES;
+    private CryptoAuth() {
+    }
 
     /**
      * <p>crypt_auth.</p>
      *
      * @param a_out an array of byte.
-     * @param m an array of byte.
-     * @param k an array of byte.
+     * @param m     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypt_auth(byte[] a_out, byte[] m, byte[] k) throws CryptoException {
@@ -72,8 +84,8 @@ public class CryptoAuth {
      * <p>crypto_auth_hmacsha256.</p>
      *
      * @param a_out an array of byte.
-     * @param m an array of byte.
-     * @param k an array of byte.
+     * @param m     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_auth_hmacsha256(byte[] a_out, byte[] m, byte[] k) throws CryptoException {
@@ -137,8 +149,8 @@ public class CryptoAuth {
      * <p>crypto_auth_hmacsha512256.</p>
      *
      * @param a_out an array of byte.
-     * @param m an array of byte.
-     * @param k an array of byte.
+     * @param m     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_auth_hmacsha512256(byte[] a_out, byte[] m, byte[] k) throws CryptoException {

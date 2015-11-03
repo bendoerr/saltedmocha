@@ -16,20 +16,32 @@ import static com.bendoerr.saltedmocha.Util.validateLength;
  */
 public class CryptoStream {
 
-    /** Constant <code>crypto_stream_xsalsa_KEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_stream_xsalsa_KEYBYTES=32</code>
+     */
     public static int crypto_stream_xsalsa_KEYBYTES = 32;
-    /** Constant <code>crypto_stream_xsalsa_NONCEBYTES=24</code> */
+    /**
+     * Constant <code>crypto_stream_xsalsa_NONCEBYTES=24</code>
+     */
     public static int crypto_stream_xsalsa_NONCEBYTES = 24;
-
-    /** Constant <code>crypto_stream_KEYBYTES=crypto_stream_xsalsa_KEYBYTES</code> */
+    /**
+     * Constant <code>crypto_stream_KEYBYTES=crypto_stream_xsalsa_KEYBYTES</code>
+     */
     public static int crypto_stream_KEYBYTES = crypto_stream_xsalsa_KEYBYTES;
-    /** Constant <code>crypto_stream_NONCEBYTES=crypto_stream_xsalsa_NONCEBYTES</code> */
+    /**
+     * Constant <code>crypto_stream_NONCEBYTES=crypto_stream_xsalsa_NONCEBYTES</code>
+     */
     public static int crypto_stream_NONCEBYTES = crypto_stream_xsalsa_NONCEBYTES;
-
-    /** Constant <code>crypto_stream_salsa_KEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_stream_salsa_KEYBYTES=32</code>
+     */
     public static int crypto_stream_salsa_KEYBYTES = 32;
-    /** Constant <code>crypto_stream_salsa_NONCEBYTES=8</code> */
+    /**
+     * Constant <code>crypto_stream_salsa_NONCEBYTES=8</code>
+     */
     public static int crypto_stream_salsa_NONCEBYTES = 8;
+    private CryptoStream() {
+    }
 
     /**
      * The crypto_stream function produces a clen-byte stream c as a function
@@ -38,8 +50,8 @@ public class CryptoStream {
      * if n.size() is not crypto_stream_NONCEBYTES.
      *
      * @param len a int.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param n   an array of byte.
+     * @param k   an array of byte.
      * @return an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
@@ -64,8 +76,8 @@ public class CryptoStream {
      * <p>crypto_stream_salsa20.</p>
      *
      * @param len a int.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param n   an array of byte.
+     * @param k   an array of byte.
      * @return an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
@@ -110,8 +122,8 @@ public class CryptoStream {
      * <p>crypto_stream_xsalsa20.</p>
      *
      * @param out an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param n   an array of byte.
+     * @param k   an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_stream_xsalsa20(byte[] out, byte[] n, byte[] k) throws CryptoException {
@@ -124,8 +136,8 @@ public class CryptoStream {
      * <p>crypto_stream_xsalsa20.</p>
      *
      * @param len a int.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param n   an array of byte.
+     * @param k   an array of byte.
      * @return an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
@@ -147,9 +159,9 @@ public class CryptoStream {
      * <p>crypto_stream_xsalsa20_xor.</p>
      *
      * @param c_out an array of byte.
-     * @param m an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param m     an array of byte.
+     * @param n     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_stream_xsalsa20_xor(byte[] c_out, byte[] m, byte[] n, byte[] k) throws CryptoException {

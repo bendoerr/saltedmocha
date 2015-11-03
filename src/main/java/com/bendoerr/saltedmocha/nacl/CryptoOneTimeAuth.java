@@ -16,15 +16,24 @@ import static org.bouncycastle.util.Arrays.constantTimeAreEqual;
  */
 public class CryptoOneTimeAuth {
 
-    /** Constant <code>crypto_onetimeauth_BYTES=16</code> */
+    /**
+     * Constant <code>crypto_onetimeauth_BYTES=16</code>
+     */
     public static final int crypto_onetimeauth_BYTES = 16;
-    /** Constant <code>crypto_onetimeauth_KEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_onetimeauth_KEYBYTES=32</code>
+     */
     public static final int crypto_onetimeauth_KEYBYTES = 32;
-
-    /** Constant <code>crypto_onetimeauth_poly1305_BYTES=16</code> */
+    /**
+     * Constant <code>crypto_onetimeauth_poly1305_BYTES=16</code>
+     */
     public static final int crypto_onetimeauth_poly1305_BYTES = 16;
-    /** Constant <code>crypto_onetimeauth_poly1305_KEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_onetimeauth_poly1305_KEYBYTES=32</code>
+     */
     public static final int crypto_onetimeauth_poly1305_KEYBYTES = 32;
+    private CryptoOneTimeAuth() {
+    }
 
     /**
      * The crypto_onetimeauth function authenticates a message m using a secret
@@ -33,8 +42,8 @@ public class CryptoOneTimeAuth {
      * not crypto_onetimeauth_KEYBYTES.
      *
      * @param a_out an array of byte.
-     * @param m an array of byte.
-     * @param k an array of byte.
+     * @param m     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_onetimeauth(byte[] a_out, byte[] m, byte[] k) throws CryptoException {
@@ -71,8 +80,8 @@ public class CryptoOneTimeAuth {
      * <p>crypto_onetimeauth_poly1305.</p>
      *
      * @param a_out an array of byte.
-     * @param m an array of byte.
-     * @param k an array of byte.
+     * @param m     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_onetimeauth_poly1305(byte[] a_out, byte[] m, byte[] k) throws CryptoException {

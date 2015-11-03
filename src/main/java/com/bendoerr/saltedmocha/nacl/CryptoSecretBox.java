@@ -15,24 +15,40 @@ import static org.bouncycastle.util.Arrays.copyOfRange;
  */
 public class CryptoSecretBox {
 
-    /** Constant <code>crypto_secretbox_xsalsa20poly1305_KEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_secretbox_xsalsa20poly1305_KEYBYTES=32</code>
+     */
     public static final int crypto_secretbox_xsalsa20poly1305_KEYBYTES = 32;
-    /** Constant <code>crypto_secretbox_xsalsa20poly1305_NONCEBYTES=24</code> */
+    /**
+     * Constant <code>crypto_secretbox_xsalsa20poly1305_NONCEBYTES=24</code>
+     */
     public static final int crypto_secretbox_xsalsa20poly1305_NONCEBYTES = 24;
-    /** Constant <code>crypto_secretbox_xsalsa20poly1305_ZEROBYTES=32</code> */
+    /**
+     * Constant <code>crypto_secretbox_xsalsa20poly1305_ZEROBYTES=32</code>
+     */
     public static final int crypto_secretbox_xsalsa20poly1305_ZEROBYTES = 32;
-    /** Constant <code>crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES=16</code> */
+    /**
+     * Constant <code>crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES=16</code>
+     */
     public static final int crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES = 16;
-
-    /** Constant <code>crypto_secretbox_KEYBYTES=crypto_secretbox_xsalsa20poly1305_KEYBYTES</code> */
+    /**
+     * Constant <code>crypto_secretbox_KEYBYTES=crypto_secretbox_xsalsa20poly1305_KEYBYTES</code>
+     */
     public static final int crypto_secretbox_KEYBYTES = crypto_secretbox_xsalsa20poly1305_KEYBYTES;
-    /** Constant <code>crypto_secretbox_NONCEBYTES=crypto_secretbox_xsalsa20poly1305_NONCEBYTES</code> */
+    /**
+     * Constant <code>crypto_secretbox_NONCEBYTES=crypto_secretbox_xsalsa20poly1305_NONCEBYTES</code>
+     */
     public static final int crypto_secretbox_NONCEBYTES = crypto_secretbox_xsalsa20poly1305_NONCEBYTES;
-    /** Constant <code>crypto_secretbox_ZEROBYTES=crypto_secretbox_xsalsa20poly1305_ZEROBYTES</code> */
+    /**
+     * Constant <code>crypto_secretbox_ZEROBYTES=crypto_secretbox_xsalsa20poly1305_ZEROBYTES</code>
+     */
     public static final int crypto_secretbox_ZEROBYTES = crypto_secretbox_xsalsa20poly1305_ZEROBYTES;
-    /** Constant <code>crypto_secretbox_BOXZEROBYTES=crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES</code> */
+    /**
+     * Constant <code>crypto_secretbox_BOXZEROBYTES=crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES</code>
+     */
     public static final int crypto_secretbox_BOXZEROBYTES = crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES;
-
+    private CryptoSecretBox() {
+    }
 
     /**
      * The crypto_secretbox function encrypts and authenticates a message m
@@ -42,9 +58,9 @@ public class CryptoSecretBox {
      * if n.size() is not crypto_secretbox_NONCEBYTES.
      *
      * @param ac_out an array of byte.
-     * @param m an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param m      an array of byte.
+     * @param n      an array of byte.
+     * @param k      an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_secretbox(byte[] ac_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
@@ -83,9 +99,9 @@ public class CryptoSecretBox {
      * <p>crypto_secretbox_xsalsa20poly1305.</p>
      *
      * @param ac_out an array of byte.
-     * @param m an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param m      an array of byte.
+     * @param n      an array of byte.
+     * @param k      an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_secretbox_xsalsa20poly1305(byte[] ac_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
@@ -120,9 +136,9 @@ public class CryptoSecretBox {
      * crypto_secretbox_NONCEBYTES.
      *
      * @param m_out an array of byte.
-     * @param c an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param c     an array of byte.
+     * @param n     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_secretbox_open(byte[] m_out, byte[] c, byte[] n, byte[] k) throws CryptoException {
@@ -146,8 +162,8 @@ public class CryptoSecretBox {
      * <p>crypto_secretbox_xsalsa20poly1305_open.</p>
      *
      * @param ac an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param n  an array of byte.
+     * @param k  an array of byte.
      * @return an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
@@ -161,9 +177,9 @@ public class CryptoSecretBox {
      * <p>crypto_secretbox_xsalsa20poly1305_open.</p>
      *
      * @param m_out an array of byte.
-     * @param ac an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param ac    an array of byte.
+     * @param n     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_secretbox_xsalsa20poly1305_open(byte[] m_out, byte[] ac, byte[] n, byte[] k) throws CryptoException {

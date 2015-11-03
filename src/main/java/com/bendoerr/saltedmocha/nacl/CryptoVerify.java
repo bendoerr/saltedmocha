@@ -7,6 +7,9 @@ import static org.bouncycastle.util.Arrays.constantTimeAreEqual;
  */
 public class CryptoVerify {
 
+    private CryptoVerify() {
+    }
+
     /**
      * <p>crypto_verify_16.</p>
      *

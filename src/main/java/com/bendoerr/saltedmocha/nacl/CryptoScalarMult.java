@@ -17,20 +17,31 @@ import static org.bouncycastle.util.Arrays.prepend;
  */
 public class CryptoScalarMult {
 
-    /** Constant <code>crypto_scalarmult_curve25519_BYTES=32</code> */
+    /**
+     * Constant <code>crypto_scalarmult_curve25519_BYTES=32</code>
+     */
     public static final int crypto_scalarmult_curve25519_BYTES = 32;
-    /** Constant <code>crypto_scalarmult_curve25519_SCALARBYTES=32</code> */
+    /**
+     * Constant <code>crypto_scalarmult_curve25519_SCALARBYTES=32</code>
+     */
     public static final int crypto_scalarmult_curve25519_SCALARBYTES = 32;
-
-    /** Constant <code>crypto_scalarmult_BYTES=crypto_scalarmult_curve25519_BYTES</code> */
+    /**
+     * Constant <code>crypto_scalarmult_BYTES=crypto_scalarmult_curve25519_BYTES</code>
+     */
     public static final int crypto_scalarmult_BYTES = crypto_scalarmult_curve25519_BYTES;
-    /** Constant <code>crypto_scalarmult_SCALARBYTES=crypto_scalarmult_curve25519_SCALARBYTES</code> */
+    /**
+     * Constant <code>crypto_scalarmult_SCALARBYTES=crypto_scalarmult_curve25519_SCALARBYTES</code>
+     */
     public static final int crypto_scalarmult_SCALARBYTES = crypto_scalarmult_curve25519_SCALARBYTES;
-
-    /** Constant <code>curve25519_BASE=prepend(
-            new byte[crypto_scalarmult_curve25519_BYTES - 1], (byte) 0x09)</code> */
+    /**
+     * Constant <code>curve25519_BASE=prepend(
+     * new byte[crypto_scalarmult_curve25519_BYTES - 1], (byte) 0x09)</code>
+     */
     public static final byte[] curve25519_BASE = prepend(
             new byte[crypto_scalarmult_curve25519_BYTES - 1], (byte) 0x09);
+
+    private CryptoScalarMult() {
+    }
 
     /**
      * This function multiplies a group element p by an integer n. It returns
@@ -40,8 +51,8 @@ public class CryptoScalarMult {
      * crypto_scalarmult_SCALARBYTES.
      *
      * @param q_out an array of byte.
-     * @param n an array of byte.
-     * @param p an array of byte.
+     * @param n     an array of byte.
+     * @param p     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_scalarmult(byte[] q_out, byte[] n, byte[] p) throws CryptoException {
@@ -67,7 +78,7 @@ public class CryptoScalarMult {
      * n.size() is not crypto_scalarmult_SCALARBYTES.
      *
      * @param q_out an array of byte.
-     * @param n an array of byte.
+     * @param n     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_scalarmult_base(byte[] q_out, byte[] n) throws CryptoException {
@@ -89,8 +100,8 @@ public class CryptoScalarMult {
      * <p>crypto_scalarmult_curve25519.</p>
      *
      * @param q_out an array of byte.
-     * @param n an array of byte.
-     * @param p an array of byte.
+     * @param n     an array of byte.
+     * @param p     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_scalarmult_curve25519(byte[] q_out, byte[] n, byte[] p) throws CryptoException {
@@ -124,7 +135,7 @@ public class CryptoScalarMult {
      * <p>crypto_scalarmult_curve25519_base.</p>
      *
      * @param q_out an array of byte.
-     * @param n an array of byte.
+     * @param n     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_scalarmult_curve25519_base(byte[] q_out, byte[] n) throws CryptoException {

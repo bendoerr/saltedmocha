@@ -17,23 +17,40 @@ import static com.bendoerr.saltedmocha.nacl.CryptoSecretBox.crypto_secretbox_xsa
  */
 public class CryptoBox {
 
-    /** Constant <code>crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES=32</code>
+     */
     public static final int crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES = 32;
-    /** Constant <code>crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES=32</code> */
+    /**
+     * Constant <code>crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES=32</code>
+     */
     public static final int crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES = 32;
-    /** Constant <code>crypto_box_curve25519xsalsa20poly1305_NONCEBYTES=24</code> */
+    /**
+     * Constant <code>crypto_box_curve25519xsalsa20poly1305_NONCEBYTES=24</code>
+     */
     public static final int crypto_box_curve25519xsalsa20poly1305_NONCEBYTES = 24;
-    /** Constant <code>crypto_box_curve25519xsalsa20poly1305_BEFORENM=32</code> */
+    /**
+     * Constant <code>crypto_box_curve25519xsalsa20poly1305_BEFORENM=32</code>
+     */
     public static final int crypto_box_curve25519xsalsa20poly1305_BEFORENM = 32;
-
-    /** Constant <code>crypto_box_SECRETKEYBYTES=crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES</code> */
+    /**
+     * Constant <code>crypto_box_SECRETKEYBYTES=crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES</code>
+     */
     public static final int crypto_box_SECRETKEYBYTES = crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES;
-    /** Constant <code>crypto_box_PUBLICKEYBYTES=crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES</code> */
+    /**
+     * Constant <code>crypto_box_PUBLICKEYBYTES=crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES</code>
+     */
     public static final int crypto_box_PUBLICKEYBYTES = crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES;
-    /** Constant <code>crypto_box_NONCEBYTES=crypto_box_curve25519xsalsa20poly1305_NONCEBYTES</code> */
+    /**
+     * Constant <code>crypto_box_NONCEBYTES=crypto_box_curve25519xsalsa20poly1305_NONCEBYTES</code>
+     */
     public static final int crypto_box_NONCEBYTES = crypto_box_curve25519xsalsa20poly1305_NONCEBYTES;
-    /** Constant <code>crypto_box_BEFORENM=crypto_box_curve25519xsalsa20poly1305_BEFORENM</code> */
+    /**
+     * Constant <code>crypto_box_BEFORENM=crypto_box_curve25519xsalsa20poly1305_BEFORENM</code>
+     */
     public static final int crypto_box_BEFORENM = crypto_box_curve25519xsalsa20poly1305_BEFORENM;
+    private CryptoBox() {
+    }
 
     /**
      * The crypto_box function encrypts and authenticates a message m using the
@@ -44,10 +61,10 @@ public class CryptoBox {
      * crypto_box_NONCEBYTES.
      *
      * @param c_out an array of byte.
-     * @param m an array of byte.
-     * @param n an array of byte.
-     * @param pk an array of byte.
-     * @param sk an array of byte.
+     * @param m     an array of byte.
+     * @param n     an array of byte.
+     * @param pk    an array of byte.
+     * @param sk    an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box(byte[] c_out, byte[] m, byte[] n, byte[] pk, byte[] sk) throws CryptoException {
@@ -57,8 +74,8 @@ public class CryptoBox {
     /**
      * <p>crypto_box.</p>
      *
-     * @param m an array of byte.
-     * @param n an array of byte.
+     * @param m  an array of byte.
+     * @param n  an array of byte.
      * @param pk an array of byte.
      * @param sk an array of byte.
      * @return an array of byte.
@@ -79,10 +96,10 @@ public class CryptoBox {
      * crypto_box_PUBLICKEYBYTES or if n.size() is not crypto_box_NONCEBYTES.
      *
      * @param m_out an array of byte.
-     * @param c an array of byte.
-     * @param n an array of byte.
-     * @param pk an array of byte.
-     * @param sk an array of byte.
+     * @param c     an array of byte.
+     * @param n     an array of byte.
+     * @param pk    an array of byte.
+     * @param sk    an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_open(byte[] m_out, byte[] c, byte[] n, byte[] pk, byte[] sk) throws CryptoException {
@@ -93,8 +110,8 @@ public class CryptoBox {
      * <p>crypto_box_beforenm.</p>
      *
      * @param k_out an array of byte.
-     * @param pk an array of byte.
-     * @param sk an array of byte.
+     * @param pk    an array of byte.
+     * @param sk    an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_beforenm(byte[] k_out, byte[] pk, byte[] sk) throws CryptoException {
@@ -105,9 +122,9 @@ public class CryptoBox {
      * <p>crypto_box_afternm.</p>
      *
      * @param c_out an array of byte.
-     * @param m an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param m     an array of byte.
+     * @param n     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_afternm(byte[] c_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
@@ -118,9 +135,9 @@ public class CryptoBox {
      * <p>crypto_box_open_afternm.</p>
      *
      * @param m_out an array of byte.
-     * @param c an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param c     an array of byte.
+     * @param n     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_open_afternm(byte[] m_out, byte[] c, byte[] n, byte[] k) throws CryptoException {
@@ -130,8 +147,8 @@ public class CryptoBox {
     /**
      * <p>crypto_box_open.</p>
      *
-     * @param c an array of byte.
-     * @param n an array of byte.
+     * @param c  an array of byte.
+     * @param n  an array of byte.
      * @param pk an array of byte.
      * @param sk an array of byte.
      * @return an array of byte.
@@ -183,10 +200,10 @@ public class CryptoBox {
      * <p>crypto_box_curve25519xsalsa20poly1305.</p>
      *
      * @param c_out an array of byte.
-     * @param m an array of byte.
-     * @param n an array of byte.
-     * @param pk an array of byte.
-     * @param sk an array of byte.
+     * @param m     an array of byte.
+     * @param n     an array of byte.
+     * @param pk    an array of byte.
+     * @param sk    an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_curve25519xsalsa20poly1305(
@@ -207,8 +224,8 @@ public class CryptoBox {
     /**
      * <p>crypto_box_curve25519xsalsa20poly1305.</p>
      *
-     * @param m an array of byte.
-     * @param n an array of byte.
+     * @param m  an array of byte.
+     * @param n  an array of byte.
      * @param pk an array of byte.
      * @param sk an array of byte.
      * @return an array of byte.
@@ -233,10 +250,10 @@ public class CryptoBox {
      * <p>crypto_box_curve25519xsalsa20poly1305_open.</p>
      *
      * @param m_out an array of byte.
-     * @param c an array of byte.
-     * @param n an array of byte.
-     * @param pk an array of byte.
-     * @param sk an array of byte.
+     * @param c     an array of byte.
+     * @param n     an array of byte.
+     * @param pk    an array of byte.
+     * @param sk    an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_curve25519xsalsa20poly1305_open(byte[] m_out, byte[] c, byte[] n, byte[] pk, byte[] sk) throws CryptoException {
@@ -256,8 +273,8 @@ public class CryptoBox {
     /**
      * <p>crypto_box_curve25519xsalsa20poly1305_open.</p>
      *
-     * @param c an array of byte.
-     * @param n an array of byte.
+     * @param c  an array of byte.
+     * @param n  an array of byte.
      * @param pk an array of byte.
      * @param sk an array of byte.
      * @return an array of byte.
@@ -281,8 +298,8 @@ public class CryptoBox {
      * <p>crypto_box_curve25519xsalsa20poly1305_beforenm.</p>
      *
      * @param k_out an array of byte.
-     * @param pk an array of byte.
-     * @param sk an array of byte.
+     * @param pk    an array of byte.
+     * @param sk    an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_curve25519xsalsa20poly1305_beforenm(byte[] k_out, byte[] pk, byte[] sk) throws CryptoException {
@@ -309,9 +326,9 @@ public class CryptoBox {
      * <p>crypto_box_curve25519xsalsa20poly1305_afternm.</p>
      *
      * @param c_out an array of byte.
-     * @param m an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param m     an array of byte.
+     * @param n     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_curve25519xsalsa20poly1305_afternm(byte[] c_out, byte[] m, byte[] n, byte[] k) throws CryptoException {
@@ -335,9 +352,9 @@ public class CryptoBox {
      * <p>crypto_box_curve25519xsalsa20poly1305_open_afternm.</p>
      *
      * @param m_out an array of byte.
-     * @param c an array of byte.
-     * @param n an array of byte.
-     * @param k an array of byte.
+     * @param c     an array of byte.
+     * @param n     an array of byte.
+     * @param k     an array of byte.
      * @throws com.bendoerr.saltedmocha.CryptoException if any.
      */
     public static void crypto_box_curve25519xsalsa20poly1305_open_afternm(byte[] m_out, byte[] c, byte[] n, byte[] k) throws CryptoException {

@@ -6,26 +6,6 @@ package com.bendoerr.saltedmocha;
 public class CryptoException extends Exception {
 
     /**
-     * <p>exception.</p>
-     *
-     * @param reason a {@link java.lang.String} object.
-     * @return a {@link com.bendoerr.saltedmocha.CryptoException} object.
-     */
-    public static CryptoException exception(String reason) {
-        return new CryptoException(reason);
-    }
-
-    /**
-     * <p>exceptionOf.</p>
-     *
-     * @param cause a {@link java.lang.Throwable} object.
-     * @return a {@link com.bendoerr.saltedmocha.CryptoException} object.
-     */
-    public static CryptoException exceptionOf(Throwable cause) {
-        return new CryptoException(cause);
-    }
-
-    /**
      * <p>Constructor for CryptoException.</p>
      */
     public CryptoException() {
@@ -44,7 +24,7 @@ public class CryptoException extends Exception {
      * <p>Constructor for CryptoException.</p>
      *
      * @param message a {@link java.lang.String} object.
-     * @param cause a {@link java.lang.Throwable} object.
+     * @param cause   a {@link java.lang.Throwable} object.
      */
     public CryptoException(String message, Throwable cause) {
         super(message, cause);
@@ -62,13 +42,33 @@ public class CryptoException extends Exception {
     /**
      * <p>Constructor for CryptoException.</p>
      *
-     * @param message a {@link java.lang.String} object.
-     * @param cause a {@link java.lang.Throwable} object.
-     * @param enableSuppression a boolean.
+     * @param message            a {@link java.lang.String} object.
+     * @param cause              a {@link java.lang.Throwable} object.
+     * @param enableSuppression  a boolean.
      * @param writableStackTrace a boolean.
      */
     public CryptoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    /**
+     * <p>exception.</p>
+     *
+     * @param reason a {@link java.lang.String} object.
+     * @return a {@link com.bendoerr.saltedmocha.CryptoException} object.
+     */
+    public static CryptoException exception(String reason) {
+        return new CryptoException(reason);
+    }
+
+    /**
+     * <p>exceptionOf.</p>
+     *
+     * @param cause a {@link java.lang.Throwable} object.
+     * @return a {@link com.bendoerr.saltedmocha.CryptoException} object.
+     */
+    public static CryptoException exceptionOf(Throwable cause) {
+        return new CryptoException(cause);
     }
 
 }
