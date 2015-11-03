@@ -1,5 +1,7 @@
 package com.bendoerr.saltedmocha;
 
+import java.security.SecureRandom;
+
 import static com.bendoerr.saltedmocha.CryptoException.exceptionOf;
 import static org.bouncycastle.util.Arrays.fill;
 
@@ -94,4 +96,20 @@ public class Util {
         fill(array, (byte) 0);
     }
 
+
+    public static byte[] nanoTimeNonce(int length) throws CryptoException {
+        if (length < 8)
+            throw exceptionOf(new IllegalArgumentException("need more length"));
+
+        long t = System.nanoTime();
+        byte[] r = new byte[length];
+        new SecureRandom().nextBytes(r);
+
+        for (int i = 7; i >= 0; i--) {
+            r[i] = (byte) (t & 0xFF);
+            t >>= 8;
+        }
+
+        return r;
+    }
 }
