@@ -4,7 +4,7 @@
 Salted Mocha
 ================================================================================
 
-Describe and such.
+Still a work in progress. Contributions and criticism (constructive or not) are welcome!
 
 ## License
 
